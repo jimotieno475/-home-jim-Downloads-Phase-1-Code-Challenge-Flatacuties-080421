@@ -21,7 +21,7 @@ json-server --watch db.json
 
 Test your server by visiting this route in the browser:
 
-[http://localhost:3000/characters](http://localhost:3000/characters)
+[http://localhost:3000 /characters](http://localhost:3000/characters)
 
 Then, open the `index.html` file on your browser to run the application.
 
@@ -35,7 +35,7 @@ As a user, I can:
 1. See all characters names in a `div` with the id of `"character-bar"`. Create
    a `span` tag with the character's name and add it the `div#character-bar`
    once you have retrieved the character data from the server. You will need to
-   make a GET request to the following endpoint to retrieve the character data:
+   make a GET requ est to the following endpoint to retrieve the character data:
 
    ```txt
    GET /characters
