@@ -1,43 +1,48 @@
 // Your code here
-// Function to fetch character data from the API
-function fetchData() {
+document.addEventListener('DOMContentLoaded',function(){
+    fetchData();
+});
+function fetchData(){
     return fetch('http://localhost:3000/characters')
-      .then(res => res.json())
-      .then(data => functionData(data));
-  }
-  
-  // Function to handle character data
-  function functionData(data) {
-    const characterBar = document.getElementById("character-bar");
-    const detailedInfo = document.getElementById("detailed-info");
-    const votesForm = document.getElementById("votes-form");
-    const characterForm = document.getElementById("character-form");
-    const resetVotesBtn = document.getElementById("reset-votes");
-    const characterName = document.getElementById('name');
-    const characterVotes = document.getElementById('vote-count');
-    const characterImage = document.getElementById('image');
-    const Votes = document.getElementById('votes');
-  
-    // Populate character names in the character bar
-    data.forEach(character => {
-      const span = document.createElement("span");
-      span.textContent = character.name;
-      span.addEventListener("click", () => {
-        characterName.textContent = character.name
-        characterImage.src = character.image
-        characterVotes.textContent = character.votes
-        
-      });
-      characterBar.appendChild(span);
-      votesForm.addEventListener('submit', (e)=>{
-        votecount = votes.value;
-        characterVotes.textContent = votecount
-        e.preventDefault()
-  
-      })
-      
-    });
+        .then(response => response.json())
+        .then(data =>{getCharacterName(data)})
+}
+
+function getCharacterName(characters){
+    const characterBar=document.getElementById('character-bar');
+    characters.forEach((character)=>{
+        const span = document.createElement('span');
+        characterBar.appendChild(span)
+        span.textContent =character.name;
+        span.addEventListener('click',()=>{
+             fetchDataDetails(character.id)
+        });
+        characterBar.appendChild(span) 
+    })
+ }
+function fetchDataDetails(characterId){
+    return fetch(`http://localhost:3000/characters/${characterId}`)
+        .then(response => response.json())
+        .then(data =>{displayDataDetails(data)})
+}
+function displayDataDetails(character){
+    document.getElementById('name') .textContent= character.name;
+    document.getElementById('image') .src=character.image;
+    document.getElementById('vote-count').textContent=character.votes;
     
-  }
-  
-  document.addEventListener('DOMContentLoaded',fetchData)
+}
+document.addEventListener('DOMContentLoaded',function(){
+    const votesForm=  document.getElementById('votes-form');
+    votesForm.addEventListener('submit', function(event){
+        event.preventDefault();
+
+        const votesInput=document.getElementById('votes');
+        const votes=parseInt(votesInput.value);
+
+        const voteCountElement=document.getElementById('vote-count');
+        const currentVotes=parseInt(voteCountElement.textContent);
+        const newVotes= currentVotes + votes;
+        voteCountElement.textContent = newVotes;
+        votesInput.value='';
+    });
+});
